@@ -51,7 +51,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
   let [searchString, setSearchString] = useState('');
   let [resultInfo, setResultInfo] = useState(ipResult);
   let [isLaoding, setLoading] = useState(true);
-  let [cacheSearchString, setCacheSearchString] = useState(String);
+  let [cacheSearchString, setCacheSearchString] = useState('');
 
 
 
@@ -60,7 +60,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
     setResultInfo({ ...resultInfo, ['country_flag']: '' })
 
     // Your code here
-    axios.get(`http://ipwhois.app/json/`)
+    axios.get(`https://ipwhois.app/json/`)
       .then((res) => {
         let resultInfo = res.data
         setResultInfo(resultInfo)
@@ -85,7 +85,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
       setLoading(true)
 
       // request 
-      await axios.get(`http://ipwhois.app/json/${searchString}?lang=en`)
+      await axios.get(`https://ipwhois.app/json/${searchString}?lang=en`)
       .then((res) => {
         let resultInfo = res.data
         setResultInfo(resultInfo)
