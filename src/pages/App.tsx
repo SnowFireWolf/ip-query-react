@@ -9,36 +9,36 @@ import { Spinner, Footer } from '../components'
 
 
 interface apiResultType {
-  message?: String,
-  ip: String,
+  message?: string,
+  ip: string,
   success: boolean,
-  type: String,
-  continent: String,
-  continent_code: String,
-  country: String,
-  country_code: String,
-  country_flag: String,
-  country_capital: String,
-  country_phone: String,
-  country_neighbours: String,
-  region: String,
-  city: String,
-  latitude: String,
-  longitude: String,
-  asn: String,
-  org: String,
-  isp: String,
-  timezone: String,
-  timezone_name: String,
-  timezone_dstOffset: String,
-  timezone_gmtOffset: String,
-  timezone_gmt: String,
-  currency: String,
-  currency_code: String,
-  currency_symbol: String,
-  currency_rates: String,
-  currency_plural: String,
-  completed_requests: String,
+  type: string,
+  continent: string,
+  continent_code: string,
+  country: string,
+  country_code: string,
+  country_flag: string,
+  country_capital: string,
+  country_phone: string,
+  country_neighbours: string,
+  region: string,
+  city: string,
+  latitude: string,
+  longitude: string,
+  asn: string,
+  org: string,
+  isp: string,
+  timezone: string,
+  timezone_name: string,
+  timezone_dstOffset: string,
+  timezone_gmtOffset: string,
+  timezone_gmt: string,
+  currency: string,
+  currency_code: string,
+  currency_symbol: string,
+  currency_rates: string,
+  currency_plural: string,
+  completed_requests: string,
 }
 
 const maxWidth: CSS.Properties = {
@@ -48,10 +48,29 @@ const maxWidth: CSS.Properties = {
 
 
 const IndexPage = ({}, ipResult: apiResultType) => {
-  let [searchString, setSearchString] = useState(String);
+  let [searchString, setSearchString] = useState('');
   let [resultInfo, setResultInfo] = useState(ipResult);
   let [isLaoding, setLoading] = useState(true);
   let [cacheSearchString, setCacheSearchString] = useState(String);
+
+
+
+  // componentDidMount
+  useEffect(() => {
+    setResultInfo({ ...resultInfo, ['country_flag']: '' })
+
+    // Your code here
+    axios.get(`http://ipwhois.app/json/`)
+      .then((res) => {
+        let resultInfo = res.data
+        setResultInfo(resultInfo)
+      })
+      .catch(() => {
+      })
+      .finally(() => setLoading(false))
+  }, []);
+
+
 
   // onChange
   let onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,23 +97,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
       //}
     } 
   };
-
-
-
-  // componentDidMount
-  useEffect(() => {
-    setLoading(true)
-    // Your code here
-    axios.get(`http://ipwhois.app/json/`)
-      .then((res) => {
-        let resultInfo = res.data
-        setResultInfo(resultInfo)
-      })
-      .catch(() => {
-      })
-      .finally(() => setLoading(false))
-  }, []);
-
 
 
 
@@ -156,7 +158,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
                     { resultInfo.country }, { resultInfo.country_code }
                   </div>
                 </div>
-
+                { typeof resultInfo.country_flag }
                 <div className="col-span-4">
                   <div className="text-lg font-bold text-green-900">城市</div>
                   <div className="text-2xl font-bold text-red-800">{ resultInfo.city }</div>
