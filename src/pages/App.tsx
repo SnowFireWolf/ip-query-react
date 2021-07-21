@@ -70,7 +70,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
       .then((res) => {
         let resultInfo = res.data
         setResultInfo(resultInfo)
-        setCacheSearchString(searchString.toString())
+        setCacheSearchString(searchString)
       })
       .catch(() => {
       }).finally(() => setLoading(false))
@@ -152,7 +152,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
                 <div className="col-span-4">
                   <div className="text-lg font-bold text-green-900">地區</div>
                   <div className="text-2xl font-bold text-red-800">
-                    <img className="rounded-md" src={resultInfo.country_flag.toString()} width="68" height="48" alt="region_flag" />
+                    <img className="rounded-md" src={resultInfo.country_flag} width="68" height="48" alt="region_flag" />
                     { resultInfo.country }, { resultInfo.country_code }
                   </div>
                 </div>
