@@ -2,9 +2,9 @@
   "name": "ip-query-react",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "start": "vite preview",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "dev": "vite"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.3.3",

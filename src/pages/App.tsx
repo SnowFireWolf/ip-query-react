@@ -1,8 +1,11 @@
+// types
+import { apiResultType } from '../types';
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import CSS from 'csstype';
 import logo from '../logo.png'
-
+// css module
+import st from '../css/tailwind.module.css'
 // components
 import {
   Spinner,
@@ -14,73 +17,18 @@ import {
   Footer,
 } from '../components'
 
-//css
-import st from '../css/tailwind.module.css'
 
-
-interface apiResultType {
-  message?: string,
-  ip: string,
-  success: boolean,
-  type: string,
-  continent: string,
-  continent_code: string,
-  country: string,
-  country_code: string,
-  country_flag: string,
-  country_capital: string,
-  country_phone: string,
-  country_neighbours: string,
-  region: string,
-  city: string,
-  latitude: string,
-  longitude: string,
-  asn: string,
-  org: string,
-  isp: string,
-  timezone: string,
-  timezone_name: string,
-  timezone_dstOffset: string,
-  timezone_gmtOffset: string,
-  timezone_gmt: string,
-  currency: string,
-  currency_code: string,
-  currency_symbol: string,
-  currency_rates: string,
-  currency_plural: string,
-  completed_requests: string,
-}
 
 const maxWidth: CSS.Properties = {
   maxWidth: '720px'
 };
-
-
 
 const IndexPage = ({}, ipResult: apiResultType) => {
   let [searchString, setSearchString] = useState('');
   let [resultInfo, setResultInfo] = useState(ipResult);
   let [isLaoding, setLoading] = useState(true);
   let [cacheSearchString, setCacheSearchString] = useState('');
-
-
-
-  // componentDidMount
-  useEffect(() => {
-    setResultInfo({ ...resultInfo, ['country_flag']: '' })
-
-    // Your code here
-    axios.get(`https://ipwhois.app/json/`)
-      .then((res) => {
-        let resultInfo = res.data
-        setResultInfo(resultInfo)
-      })
-      .catch(() => {
-      })
-      .finally(() => setLoading(false))
-  }, []);
-
-
+  let resultCard
 
   // onChange
   let onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,9 +57,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
   };
 
 
-
-
-  let resultCard
   if(isLaoding) {
     resultCard = '';
   } else {
@@ -139,7 +84,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
               <TextDetails>{ resultInfo.type }</TextDetails>
             </div>
           </div>
-
 
           <div className={`${st['mt-10']} ${st['text-3xl']}`}>地理位置</div>
 
@@ -175,8 +119,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
             </div>
           </div>
 
-
-
           <Heading className={`${st['mt-10']} ${st['text-3xl']}`}>時區資訊</Heading>
 
           <Heading className={`${st['mt-3']} ${st['text-lg']}`}>時區</Heading>
@@ -197,8 +139,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
             </div>
           </div>
 
-
-
           <Heading className={`${st['mt-10']} ${st['text-3xl']}`}>ISP 資訊</Heading>
     
           <Heading className={st['mt-5']}>ASN</Heading>
@@ -209,9 +149,7 @@ const IndexPage = ({}, ipResult: apiResultType) => {
           
           <Heading className={`${st['mt-5']} ${st['text-lg']}`}>網路供應商</Heading>
           <TextDetails>{ resultInfo.isp }</TextDetails>
-          
-          
-          
+
           <Heading className={`${st['mt-10']} ${st['text-3xl']}`}>貨幣資訊</Heading>
 
           <div className={`${st['mt-5']} ${st['grid']} ${st['grid-cols-1']} ${st['sm:grid-cols-12']}`}>
@@ -242,20 +180,37 @@ const IndexPage = ({}, ipResult: apiResultType) => {
 
 
 
+  // componentDidMount
+  useEffect(() => {
+    setResultInfo({ ...resultInfo, ['country_flag']: '' })
 
+    // Your code here
+    axios.get(`https://ipwhois.app/json/`)
+      .then((res) => {
+        let resultInfo = res.data
+        setResultInfo(resultInfo)
+      })
+      .catch(() => {
+      })
+      .finally(() => setLoading(false))
+  }, []);
+
+
+  /* test
+  <h2 className="mt-20 text-center text-5xl font-bold">
+        Result: { values.link } <br/>
+        Loading: { loadingSpinner }
+  </h2>
+  */
   return (
     <div className={[st['min-h-screen'], st['container'], st['mx-auto'], st['py-4'], st['bg-grey-100']].join(' ')} style={ maxWidth }>
+      { '<!-- logo -->' }
       <img src={logo} className={st['mx-auto']} width="200px;" />
-
+      { '<!-- title -->' }
       <h2 className={`${st['mt-20']} ${st['text-center']} ${st['text-5xl']} ${st['font-bold']}`}>
         IP 位址資訊查詢
       </h2>
-
-      { /*<h2 className="mt-20 text-center text-5xl font-bold">
-        Result: { values.link } <br/>
-        Loading: { loadingSpinner }
-  </h2>*/ }
-
+      { '<!-- form -->' }
       <form onSubmit={onSubmit}>
         <Card>
           <div className={st['mt-1']}>
@@ -267,23 +222,22 @@ const IndexPage = ({}, ipResult: apiResultType) => {
               onChange={onChange}
             />
           </div>
-
+          { '<!-- searching -->' }
           <p className={`${st['mt-2']} ${st['text-sm']} ${st['text-gray-500']}`}>
             現在查詢的 IP 是： { cacheSearchString }
           </p>
-
+          { '<!-- tip -->' }
           <p className={`${st['text-sm']} ${st['text-gray-500']}`}>
             查詢任何 IP 位址，並顯示 IP 位址的結果
           </p>
         </Card>
-
+        { '<!-- button -->' }
         <Button submit={true}>
           { isLaoding ? <Spinner/> : <span>查詢</span>}
         </Button>
       </form>
-
+      { '<!-- result component -->' }
       { resultCard }
-      
       <Footer/>
     </div>
   )
