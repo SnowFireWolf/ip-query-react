@@ -204,13 +204,13 @@ const IndexPage = ({}, ipResult: apiResultType) => {
   */
   return (
     <div className={[st['min-h-screen'], st['container'], st['mx-auto'], st['py-4'], st['bg-grey-100']].join(' ')} style={ maxWidth }>
-      { '<!-- logo -->' }
+      { /* logo */ }
       <img src={logo} className={st['mx-auto']} width="200px;" />
-      { '<!-- title -->' }
+      { /* title */ }
       <h2 className={`${st['mt-20']} ${st['text-center']} ${st['text-5xl']} ${st['font-bold']}`}>
         IP 位址資訊查詢
       </h2>
-      { '<!-- form -->' }
+      { /* form */ }
       <form onSubmit={onSubmit}>
         <Card>
           <div className={st['mt-1']}>
@@ -222,21 +222,21 @@ const IndexPage = ({}, ipResult: apiResultType) => {
               onChange={onChange}
             />
           </div>
-          { '<!-- searching -->' }
+          { /* searching */ }
           <p className={`${st['mt-2']} ${st['text-sm']} ${st['text-gray-500']}`}>
             現在查詢的 IP 是： { cacheSearchString }
           </p>
-          { '<!-- tip -->' }
+          { /* tip */ }
           <p className={`${st['text-sm']} ${st['text-gray-500']}`}>
             查詢任何 IP 位址，並顯示 IP 位址的結果
           </p>
         </Card>
-        { '<!-- button -->' }
+        { /* button */ }
         <Button submit={true}>
           { isLaoding ? <Spinner/> : <span>查詢</span>}
         </Button>
       </form>
-      { '<!-- result component -->' }
+      { /* result component */ }
       { resultCard }
       <Footer/>
     </div>
