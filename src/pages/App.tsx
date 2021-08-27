@@ -1,8 +1,8 @@
 // types
 import { apiResultType } from '../types';
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import CSS from 'csstype';
+import { apiRequest } from '../apiRequest';
 import logo from '../logo.png'
 // css module
 import st from '../css/tailwind.module.css'
@@ -43,18 +43,44 @@ const IndexPage = ({}, ipResult: apiResultType) => {
       setLoading(true)
 
       // request 
-      await axios.get(`https://ipwhois.app/json/${searchString}?lang=en`)
-      .then((res) => {
+      await apiRequest(searchString).then((res) => {
         let resultInfo = res.data
         setResultInfo(resultInfo)
         setCacheSearchString(searchString)
+        // URL set query
+        const url = new URL(window.location.href);
+        url.searchParams.set('ip', searchString);
+        window.history.pushState({}, '', url.href);
+
       })
       .catch(() => {
       }).finally(() => setLoading(false))
-      //if(cacheSearchString !== searchString) {
-      //}
     } 
   };
+
+  // componentDidMount
+  useEffect(() => {
+    setResultInfo({ ...resultInfo, ['country_flag']: '' })
+
+    let searchParams = new URLSearchParams(window.location.search);
+    let queryIpAddress = searchParams.get("ip");
+    let searchString = "";
+
+    if(queryIpAddress !== null) {
+      searchString = queryIpAddress;
+      setCacheSearchString(searchString)
+    }
+
+    apiRequest(searchString)
+      .then((res) => {
+        let resultInfo = res.data
+        setResultInfo(resultInfo)
+      })
+      .catch(() => {
+      })
+      .finally(() => setLoading(false))
+  }, []);
+
 
 
   if(isLaoding) {
@@ -177,24 +203,6 @@ const IndexPage = ({}, ipResult: apiResultType) => {
       </Card>;
     }
   }
-
-
-
-  // componentDidMount
-  useEffect(() => {
-    setResultInfo({ ...resultInfo, ['country_flag']: '' })
-
-    // Your code here
-    axios.get(`https://ipwhois.app/json/`)
-      .then((res) => {
-        let resultInfo = res.data
-        setResultInfo(resultInfo)
-      })
-      .catch(() => {
-      })
-      .finally(() => setLoading(false))
-  }, []);
-
 
   /* test
   <h2 className="mt-20 text-center text-5xl font-bold">
