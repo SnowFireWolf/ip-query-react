@@ -1,18 +1,28 @@
+import path from 'path';
 import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react-refresh'
-import { minifyHtml, injectHtml } from 'vite-plugin-html';
+import { createHtmlPlugin } from 'vite-plugin-html'
+import reactSWC from '@vitejs/plugin-react-swc';
+
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    reactRefresh(),
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 
-    minifyHtml(),
-    injectHtml({
-      injectData: {
-        title: 'vite-plugin-html-example',
-        injectScript: '<script src="./inject.js"></script>',
+  plugins: [
+    reactSWC(),
+
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          title: 'IP Query',
+          injectScript: '<script src="./inject.js"></script>',
+        },
       },
     }),
   ],

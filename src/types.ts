@@ -1,4 +1,4 @@
-interface apiResultType {
+interface ipApiResultType {
   message?: string,
   ip: string,
   success: boolean,
@@ -32,5 +32,5 @@ interface apiResultType {
 }
 
 export type {
-  apiResultType
+  ipApiResultType
 }
